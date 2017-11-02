@@ -1,0 +1,33 @@
+{
+  "name": "botdbserv",
+  "version": "1.0.0",
+  "description": "Go proj dbserv",
+  "main": "./app/server.js",
+  "scripts": {
+    "start": "node ./app/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michael-kamel/botDBServ.git"
+  },
+  "author": "BoltBot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michael-kamel/botDBServ/issues"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "custom-error": "^0.2.1",
+    "dotenv": "^4.0.0",
+    "globby": "^6.1.0",
+    "joi": "^10.6.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.11.5",
+    "path": "^0.12.7",
+    "restify": "^5.0.1",
+    "restify-joi-middleware": "^3.0.4",
+    "winston": "^2.4.0"
+  },
+  "homepage": "https://github.com/michael-kamel/botDBServ#readme"
+}
