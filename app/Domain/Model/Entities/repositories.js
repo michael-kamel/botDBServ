@@ -58,6 +58,7 @@ serviceLocator.registerModule('ListingRepository', function (ListingModel, Listi
     }
     async function removeById(id)
     {
+        await getById(id)
         await ListingModel.findByIdAndRemove(id).exec()
     }
     

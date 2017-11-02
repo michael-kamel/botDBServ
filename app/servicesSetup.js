@@ -5,9 +5,9 @@ global.serviceLocator = serviceLocator
 globby.sync
 (
     [
+        './app/Domain/Config/**/*.js',
         './app/Domain/Tools/**/*.js',
         './app/Domain/Errors/**/*.js',
-        './app/Domain/Config/**/*.js',
         './app/Domain/Services/**/*.js',
         './app/Domain/Model/**/*.js',
         './app/Domain/Core/**/*.js'
