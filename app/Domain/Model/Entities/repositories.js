@@ -71,3 +71,67 @@ serviceLocator.registerModule('ListingRepository', function (ListingModel, Listi
         toListing: errorDecorator(toListing)
     }
 })
+
+serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestModel, BuyerRequest, Listing, ListingRepository, errorFilter, DBErrors) 
+{
+    const errorDecorator = errorFilter.filterMaker(DBErrors.DBError)
+    async function toBuyerRequest(meta)
+    {
+        let listings = _.map(meta.listings, ListingRepository.getById)
+        Promise.all(listings)
+        let build = new BuyerRequest.Builder()
+        build.buyerName(meta.buyerInfo.name).buyerPhone(meta.buyerInfo.phone).buyerEmail(meta.buyerInfo.email).listings(listings)
+        await BuyerRequest.validate(build)
+        let buyerRequest = build.build()
+        buyerRequest.setId(meta._id)
+        return buyerRequest
+    }
+    function fromBuyerRequest(buyerRequest)
+    {
+        return {
+            _id:buyerRequest.id,
+            buyerInfo:
+            {
+                name:buyerRequest.buyerInfo.name,
+                phone:buyerRequest.buyerInfo.phone,
+                email:buyerRequest.buyerInfo.email
+            },
+            listings:_.map(buyerRequest.listings, listing => listing.id)
+        }
+    }
+
+    async function getById(id)
+    {
+        let buyerRequest = await BuyerRequestModel.findById(id).exec()
+        if(buyerRequest)
+            return toBuyerRequest(buyerRequest)
+        throw new DBErrors.NotFound(`Failed to find Buyer Request with id ${id}`)
+    }
+    async function save(buyerRequest)
+    {
+        let saveListingsResult = _.map(buyerRequest.Listings, ListingRepository.save)
+        Promise.all(saveListingsResult)
+        let buyerRequestModel = fromBuyerRequest(buyerRequest)
+        if(buyerRequest._id)
+            await BuyerRequestModel.update({_id:buyerRequestModel._id}, buyerRequestModel).exec()
+        else
+            await BuyerRequestModel.create(buyerRequestModel)
+    }
+    async function remove(buyerRequestModel)
+    {
+        return removeById(buyerRequestModel.id)
+    }
+    async function removeById(id)
+    {
+        await getById(id)
+        await BuyerRequestModel.findByIdAndRemove(id).exec()
+    }
+    
+    return {
+        getById: errorDecorator(getById),
+        save: errorDecorator(save),
+        remove: errorDecorator(remove),
+        removeById: errorDecorator(removeById),
+        toBuyerRequest: errorDecorator(toBuyerRequest)
+    }
+})

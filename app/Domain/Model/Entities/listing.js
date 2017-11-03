@@ -1,4 +1,3 @@
-
 serviceLocator.registerModule('Listing', function (joi, EntitiesValidationSchemas)
 {
     class Listing
