@@ -41,7 +41,7 @@ serviceLocator.registerModule('ListingRepository', function (ListingModel, Listi
         let query = await SpecificationTranslator.translate(specification)
         let listings = await ListingModel.find(query).exec()
         listings.map(toListing)
-        Promise.all(listings)
+        await Promise.all(listings)
         return listings
     }
     async function save(listing)
@@ -77,8 +77,7 @@ serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestMo
     const errorDecorator = errorFilter.filterMaker(DBErrors.DBError)
     async function toBuyerRequest(meta)
     {
-        let listings = _.map(meta.listings, ListingRepository.getById)
-        Promise.all(listings)
+        let listings = await util._.reduce(meta.listings, async (acc, listingId) => (await acc).concat(await ListingRepository.getById(listingId)), Promise.resolve([]))
         let build = new BuyerRequest.Builder()
         build.buyerName(meta.buyerInfo.name).buyerPhone(meta.buyerInfo.phone).buyerEmail(meta.buyerInfo.email).listings(listings)
         await BuyerRequest.validate(build)
@@ -96,7 +95,7 @@ serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestMo
                 phone:buyerRequest.buyerInfo.phone,
                 email:buyerRequest.buyerInfo.email
             },
-            listings:_.map(buyerRequest.listings, listing => listing.id)
+            listings:util._.map(buyerRequest.listings, listing => listing.id)
         }
     }
 
@@ -109,8 +108,8 @@ serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestMo
     }
     async function save(buyerRequest)
     {
-        let saveListingsResult = _.map(buyerRequest.Listings, ListingRepository.save)
-        Promise.all(saveListingsResult)
+        let saveListingsResult = util._.map(buyerRequest.Listings, ListingRepository.save)
+        await Promise.all(saveListingsResult)
         let buyerRequestModel = fromBuyerRequest(buyerRequest)
         if(buyerRequest._id)
             await BuyerRequestModel.update({_id:buyerRequestModel._id}, buyerRequestModel).exec()

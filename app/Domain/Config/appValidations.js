@@ -53,6 +53,19 @@ serviceLocator.registerModule('appValidationSchemas', function (joi)
                     price: PREDEFINED.LISTING_PRICE,
                     description: PREDEFINED.LISTING_DESCRIPTION
                 }).required()
+        }),
+        ADD_BUYER_REQUEST: joi.object().keys(
+        {
+            body: joi.object().keys(
+            {
+                buyerInfo: joi.object().keys(
+                    {
+                        name: PREDEFINED.NAME,
+                        phone: PREDEFINED.PHONE,
+                        email: PREDEFINED.EMAIL
+                    }).required(),
+                listings: joi.array().items(joi.string().required()).required()
+            })
         })
     }
 

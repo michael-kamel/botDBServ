@@ -6,11 +6,12 @@ module.exports = function (app)
             return
         next()
     })
-    serviceLocator.inject(function (listingCore, appValidationSchemas) 
+    serviceLocator.inject(function (listingCore, buyerRequestCore, appValidationSchemas) 
     {
         app.get({path:'/getlistingbyid', version:'1.0.0', validation:appValidationSchemas.GET_LISTING_BY_ID},  listingCore.getListingById)
         app.del({path:'/removelistingbyid', version:'1.0.0', validation:appValidationSchemas.REMOVE_LISTING_BY_ID},  listingCore.removeListingById)
         app.get({path:'/getlistingbyspec', version:'1.0.0', validation:appValidationSchemas.GET_LISTING_BY_SPECIFICATION},  listingCore.getListingBySpecification)
         app.post({path:'/addlisting', version:'1.0.0', validation:appValidationSchemas.ADD_LISTING}, listingCore.addListing)
+        app.post({path: '/addbuyerrequest', version:'1.0.0', validation:appValidationSchemas.ADD_BUYER_REQUEST}, buyerRequestCore.addBuyerRequest)
     })()
 }

@@ -26,6 +26,7 @@ serviceLocator.registerModule('EntitiesValidationSchemas', function (joi)
     }
     const Listing = joi.object().keys(
             {
+                id: joi.any(),
                 ownerInfo: PREDEFINED.OWNER_INFO,
                 category: PREDEFINED.LISTING_CATEGORY,
                 location: PREDEFINED.LISTING_LOCATION,
@@ -35,6 +36,7 @@ serviceLocator.registerModule('EntitiesValidationSchemas', function (joi)
             }).required()
     const BuyerRequest = joi.object().keys(
             {
+                id: joi.any(),
                 listings: joi.array().items(Listing).required(),
                 buyerInfo: PREDEFINED.BUYER_INFO,
             }).required()
