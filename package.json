@@ -27,8 +27,8 @@
     "lodash": "^4.17.4",
     "mongoose": "^4.11.5",
     "path": "^0.12.7",
-    "restify": "^5.0.1",
-    "restify-joi-middleware": "^3.0.0",
+    "restify": "5.0.1",
+    "restify-joi-middleware": "3.0.0",
     "winston": "^2.3.1"
   },
   "homepage": "https://github.com/michael-kamel/botDBServ#readme"
