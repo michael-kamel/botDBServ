@@ -40,9 +40,8 @@ serviceLocator.registerModule('ListingRepository', function (ListingModel, Listi
     {
         let query = await SpecificationTranslator.translate(specification)
         let listings = await ListingModel.find(query).exec()
-        listings.map(toListing)
-        await Promise.all(listings)
-        return listings
+        let resolvedListings = await util._.reduce(listings, async (acc, meta) => (await acc).concat(await toListing(meta)), Promise.resolve([]))
+        return resolvedListings
     }
     async function save(listing)
     {
@@ -77,7 +76,18 @@ serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestMo
     const errorDecorator = errorFilter.filterMaker(DBErrors.DBError)
     async function toBuyerRequest(meta)
     {
-        let listings = await util._.reduce(meta.listings, async (acc, listingId) => (await acc).concat(await ListingRepository.getById(listingId)), Promise.resolve([]))
+        let listings = await util._.reduce(meta.listings, async (acc, listingId) => 
+        {
+            try
+            {
+                listing = await ListingRepository.getById(listingId)
+                return (await acc).concat(listing)
+            }
+            catch(err)
+            {
+                return acc
+            }
+        }, Promise.resolve([]))
         let build = new BuyerRequest.Builder()
         build.buyerName(meta.buyerInfo.name).buyerPhone(meta.buyerInfo.phone).buyerEmail(meta.buyerInfo.email).listings(listings)
         await BuyerRequest.validate(build)
@@ -108,11 +118,13 @@ serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestMo
     }
     async function save(buyerRequest)
     {
-        let saveListingsResult = util._.map(buyerRequest.Listings, ListingRepository.save)
-        await Promise.all(saveListingsResult)
         let buyerRequestModel = fromBuyerRequest(buyerRequest)
         if(buyerRequest._id)
+        {
+            let saveListingsResult = util._.map(buyerRequest.Listings, ListingRepository.save)
+            await Promise.all(saveListingsResult)
             await BuyerRequestModel.update({_id:buyerRequestModel._id}, buyerRequestModel).exec()
+        }
         else
             await BuyerRequestModel.create(buyerRequestModel)
     }

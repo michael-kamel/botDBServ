@@ -65,7 +65,7 @@ serviceLocator.registerModule('appValidationSchemas', function (joi)
                         email: PREDEFINED.EMAIL
                     }).required(),
                 listings: joi.array().items(joi.string().required()).required()
-            })
+            }).required()
         })
     }
 

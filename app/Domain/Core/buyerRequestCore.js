@@ -3,7 +3,8 @@ serviceLocator.registerModule('buyerRequestCore', function (BuyerRequestReposito
     async function addBuyerRequest(req, res)
     {
         buyerRequest = await BuyerRequestRepository.toBuyerRequest(req.body)
-        await BuyerRequestRepository.save(buyerRequest)
+        if(buyerRequest.listings.length > 0)
+            await BuyerRequestRepository.save(buyerRequest)
         res.send(200, {success: true})
     }
 

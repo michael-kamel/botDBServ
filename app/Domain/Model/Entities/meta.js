@@ -33,7 +33,7 @@ serviceLocator.registerModule('EntitiesValidationSchemas', function (joi)
                 space: joi.number().integer().min(PREDEFINED.LISTING_MIN_SIZE).max(PREDEFINED.LISTING_MAX_SIZE).required(),
                 price: joi.number().integer().min(PREDEFINED.LISTING_MIN_PRICE).required(),
                 description: joi.string()
-            }).required()
+            })
     const BuyerRequest = joi.object().keys(
             {
                 id: joi.any(),

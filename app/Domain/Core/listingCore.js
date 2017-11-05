@@ -23,7 +23,7 @@ serviceLocator.registerModule('listingCore', function (ListingRepository, Specif
         let locationSpecification = new Specification.Expression.Equals('location', location)
         let specification = priceSpecification.And(spaceSpecification).And(categorySpecification).And(locationSpecification)
         let listings = await ListingRepository.find(specification)
-        res.send(200, {success:true, data:{listings}})
+        res.send(200, {success:true, listings})
     }
     async function addListing(req, res)
     {
