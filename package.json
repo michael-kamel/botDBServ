@@ -1,6 +1,9 @@
 {
   "name": "botdbserv",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.4.0"
+  },
   "description": "Go proj dbserv",
   "main": "./app/server.js",
   "scripts": {
