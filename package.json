@@ -16,6 +16,8 @@
   "bugs": {
     "url": "https://github.com/michael-kamel/botDBServ/issues"
   },
+  "engines" : { "node" : ">=7.9.0" },
+  "engineStrict" : true,
   "dependencies": {
     "bluebird": "^3.5.0",
     "custom-error": "^0.2.1",
@@ -26,8 +28,9 @@
     "mongoose": "^4.11.5",
     "path": "^0.12.7",
     "restify": "^5.0.1",
-    "restify-joi-middleware": "^3.0.4",
-    "winston": "^2.4.0"
+    "restify-joi-middleware": "^3.0.0",
+    "winston": "^2.3.1"
   },
   "homepage": "https://github.com/michael-kamel/botDBServ#readme"
+
 }
