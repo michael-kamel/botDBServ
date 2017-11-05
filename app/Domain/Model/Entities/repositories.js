@@ -76,18 +76,21 @@ serviceLocator.registerModule('BuyerRequestRepository', function (BuyerRequestMo
     const errorDecorator = errorFilter.filterMaker(DBErrors.DBError)
     async function toBuyerRequest(meta)
     {
-        let listings = await util._.reduce(meta.listings, async (acc, listingId) => 
+        let listings = []
+        for(let i = 0; i < meta.listings.length; i++)
         {
+            let id = meta.listings[i]
             try
             {
-                listing = await ListingRepository.getById(listingId)
-                return (await acc).concat(listing)
+                let listing = await ListingRepository.getById(id)
+                listings.push(listing)
             }
             catch(err)
             {
-                return acc
+                if(!(err instanceof DBErrors.NotFound))
+                    throw err
             }
-        }, Promise.resolve([]))
+        }
         let build = new BuyerRequest.Builder()
         build.buyerName(meta.buyerInfo.name).buyerPhone(meta.buyerInfo.phone).buyerEmail(meta.buyerInfo.email).listings(listings)
         await BuyerRequest.validate(build)
