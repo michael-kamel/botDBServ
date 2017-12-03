@@ -13,6 +13,7 @@ serviceLocator.inject(function(dbService)
         },
         category: {type: String, required: true},
         location: {type: String, required: true},
+        address: {type: String, required: true},
         space: {type: Number, required: true},
         price: {type: Number, required: true},
         description: {type: String, required: true}

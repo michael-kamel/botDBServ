@@ -7,6 +7,7 @@ serviceLocator.registerModule('Listing', function (joi, EntitiesValidationSchema
             this.ownerInfo = description.ownerInfo
             this.category = description.category,
             this.location = description.location,
+            this.address = description.address
             this.space = description.space
             this.price = description.price
             this.description = description.description
@@ -56,6 +57,11 @@ serviceLocator.registerModule('Listing', function (joi, EntitiesValidationSchema
             this._price = price
             return this
         }
+        address(address)
+        {
+            this._address = address
+            return this
+        }
         description(description)
         {
             this._description = description
@@ -74,6 +80,7 @@ serviceLocator.registerModule('Listing', function (joi, EntitiesValidationSchema
                 location:this._location,
                 space:this._space,
                 price:this._price,
+                address:this._address,
                 description:this._description
             }
         }

@@ -5,7 +5,7 @@ serviceLocator.registerModule('ListingRepository', function (ListingModel, Listi
     {
         let build = new Listing.Builder()
         build.ownerName(meta.ownerInfo.name).ownerPhone(meta.ownerInfo.phone).ownerEmail(meta.ownerInfo.email).category(meta.category).location(meta.location)
-        .space(meta.space).category(meta.category).price(meta.price).description(meta.description)
+        .space(meta.space).category(meta.category).price(meta.price).description(meta.description).address(meta.address)
         await Listing.validate(build)
         let listing = build.build()
         listing.setId(meta._id)
@@ -22,6 +22,7 @@ serviceLocator.registerModule('ListingRepository', function (ListingModel, Listi
                 email:listing.ownerInfo.email
             },
             category:listing.category,
+            address:listing.address,
             location:listing.location,
             space:listing.space,
             price:listing.price,

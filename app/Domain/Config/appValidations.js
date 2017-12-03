@@ -5,6 +5,7 @@ serviceLocator.registerModule('appValidationSchemas', function (joi)
         NAME: joi.string().min(3).max(30).required(),
         EMAIL: joi.string().email().required(),
         PHONE: joi.string().regex(/[0-9]/).required(),
+        ADDRESS: joi.string().min(10).required(),
         LISTING_DESCRIPTION: joi.string().max(200).required(),
         LISTING_SPACE: joi.number().min(0).integer().required(),
         LISTING_PRICE: joi.number().min(0).integer().required(),
@@ -49,6 +50,7 @@ serviceLocator.registerModule('appValidationSchemas', function (joi)
                     }).required(),
                     category: PREDEFINED.LISING_CATEGORY,
                     location: PREDEFINED.LISING_LOCATION,
+                    address: PREDEFINED.ADDRESS,
                     space: PREDEFINED.LISTING_SPACE,
                     price: PREDEFINED.LISTING_PRICE,
                     description: PREDEFINED.LISTING_DESCRIPTION
